@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/RLogoC.ico" />
+        <link rel="icon" href="/R.png" />
       </head>
       <body>
         <ThemeProvider
