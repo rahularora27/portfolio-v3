@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from '@/components/ui/theme-provider';
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   title: 'rahularora.tech',
@@ -15,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/RLogo.png" />
+        <link rel="icon" href="/RLogoC.ico" />
       </head>
       <body>
         <ThemeProvider
@@ -24,6 +25,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Navbar />
           {children}
         </ThemeProvider>
       </body>
