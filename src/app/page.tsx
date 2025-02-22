@@ -15,18 +15,16 @@ const socialLinks = [
 
 export default function Home() {
   return (
-    <div className="flex justify-center items-center min-h-auto p-6">
+    <div className="flex flex-col justify-center items-center flex-grow p-6">
       <div className="w-full max-w-2xl space-y-6">
-        <h1 className="text-4xl font-bold flex items-center gap-2">
-          Oh, hello there 👋
-        </h1>
+        <h1 className="text-4xl font-bold gap-2">Oh, hello there 👋</h1>
         <div className="space-y-2 text-lg">
           <p>
             👨‍🎓 I’m Rahul Arora, a 22-year-old final year student at Manipal
             University.
           </p>
-          <p>👨‍💻 I love math and computer science.</p>
-          <p>⚒️ I mainly work with React and JavaScript on a daily basis.</p>
+          <p>👨‍💻 I love math and cs.</p>
+          <p>⚒️ Currently working at Rakuten</p>
           <p>🏡 Currently living in the beautiful city of Chandigarh, India.</p>
         </div>
         <div className="flex gap-4 mt-4">
