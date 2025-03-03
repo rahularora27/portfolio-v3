@@ -23,9 +23,9 @@ export default function Home() {
             👨‍🎓 I’m Rahul Arora, a 22-year-old final year student at Manipal
             University.
           </p>
-          <p>👨‍💻 I love math and cs.</p>
-          <p>⚒️ Currently working at Rakuten</p>
-          <p>🏡 Currently living in the beautiful city of Chandigarh, India.</p>
+          <p>👨‍💻 A part time cricketer and a lover of math and cs.</p>
+          <p>⚒️ I'm currently working at Rakuten India</p>
+          <p>🏡 Currently living in the beautiful city of Bengaluru, India.</p>
         </div>
         <div className="flex gap-4 mt-4">
           {socialLinks.map(({ href, icon }) => (

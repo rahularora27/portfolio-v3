@@ -9,11 +9,11 @@ const Navbar = () => {
           <Link href="/">rahularora.tech</Link>
           <ThemeSwitcher />
         </div>
-        <div>
+        {/*<div>
           <Link href="/projects" className="text-lg">
             Projects
           </Link>
-        </div>
+        </div>*/}
       </div>
     </nav>
   );

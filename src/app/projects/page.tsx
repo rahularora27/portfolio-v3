@@ -30,7 +30,7 @@ export default function Projects() {
   return (
     <div className="flex flex-col justify-center items-center flex-grow p-6">
       <div className="w-full max-w-2xl space-y-6">
-        <h1 className="text-3xl font-bold">Projects</h1>
+        \* <h1 className="text-3xl font-bold">Projects</h1>
         {projects.map(({ name, description, github, live }) => (
           <div key={name} className="border-b pb-4">
             {/* Container with responsive layout */}
