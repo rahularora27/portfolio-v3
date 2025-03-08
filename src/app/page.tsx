@@ -20,11 +20,11 @@ export default function Home() {
         <h1 className="text-4xl font-bold gap-2">Oh, hello there 👋</h1>
         <div className="space-y-2 text-lg">
           <p>
-            👨‍🎓 I’m Rahul Arora, a 22-year-old final year student at Manipal
+            👨‍🎓 I&apos;m Rahul Arora, a 22-year-old final year student at Manipal
             University.
           </p>
           <p>👨‍💻 A part time cricketer and a lover of math and cs.</p>
-          <p>⚒️ I'm currently working at Rakuten India</p>
+          <p>⚒️ I&apos;m currently working at Rakuten India</p>
           <p>🏡 Currently living in the beautiful city of Bengaluru, India.</p>
         </div>
         <div className="flex gap-4 mt-4">
