@@ -1,15 +1,17 @@
-import Link from 'next/link';
-import { Github, Linkedin, Twitter } from 'lucide-react';
+import { IconBrandGithub, IconBrandLinkedin, IconBrandX } from '@tabler/icons-react';
 
 const socialLinks = [
   {
     href: 'https://github.com/rahularora27',
-    icon: <Github />,
+    icon: <IconBrandGithub />,
   },
-  { href: 'https://x.com/_rahul27', icon: <Twitter /> },
+  {
+    href: 'https://x.com/_rahul27',
+    icon: <IconBrandX />
+  },
   {
     href: 'https://www.linkedin.com/in/rahularora2715/',
-    icon: <Linkedin />,
+    icon: <IconBrandLinkedin />,
   },
 ];
 
@@ -23,20 +25,21 @@ export default function Home() {
             👨‍🎓 I&apos;m Rahul Arora, a 22-year-old final year student at Manipal
             University.
           </p>
-          <p>👨‍💻 A part time cricketer and a lover of math and cs.</p>
-          <p>⚒️ I&apos;m currently working at Rakuten India</p>
+          <p>👨‍💻 A part-time cricketer and a lover of math and CS.</p>
+          <p>⚒️ I&apos;m currently working at Rakuten India.</p>
           <p>🏡 Currently living in the beautiful city of Bengaluru, India.</p>
         </div>
         <div className="flex gap-4 mt-4">
           {socialLinks.map(({ href, icon }) => (
-            <Link
+            <a
               key={href}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-blue-500 transition-colors"
             >
               {icon}
-            </Link>
+            </a>
           ))}
         </div>
       </div>
