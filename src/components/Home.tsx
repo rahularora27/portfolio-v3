@@ -1,14 +1,14 @@
-import { IconBrandGithub, IconBrandLinkedin, IconBrandX } from '@tabler/icons-react';
+import { IconBrandGithub, IconBrandLinkedin } from '@tabler/icons-react';
 
 const socialLinks = [
   {
     href: 'https://github.com/rahularora27',
     icon: <IconBrandGithub />,
   },
-  {
-    href: 'https://x.com/_rahul27',
-    icon: <IconBrandX />
-  },
+  // {
+  //   href: 'https://x.com/_rahul27',
+  //   icon: <IconBrandX />
+  // },
   {
     href: 'https://www.linkedin.com/in/rahularora2715/',
     icon: <IconBrandLinkedin />,
@@ -22,10 +22,10 @@ export default function Home() {
         <h1 className="text-4xl font-bold gap-2">Oh, hello there 👋</h1>
         <div className="space-y-2 text-lg">
           <p>
-            👨‍🎓 I&apos;m Rahul Arora, a 22-year-old final year student at Manipal
-            University.
+            👨‍🎓 I&apos;m Rahul Arora.
           </p>
-          <p>👨‍💻 A part-time cricketer and a lover of math and CS.</p>
+          {/* <p>👨‍💻 A part-time cricketer and a lover of math and CS.</p> */}
+          <p>🎓 Recently graduated from Manipal University Jaipur.</p>
           <p>⚒️ I&apos;m currently working at Rakuten India.</p>
           <p>🏡 Currently living in the beautiful city of Bengaluru, India.</p>
         </div>
