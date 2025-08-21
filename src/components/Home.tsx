@@ -13,8 +13,8 @@ export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center flex-grow p-6">
       <div className="w-full max-w-2xl space-y-6">
-        <h1 className="text-4xl font-bold gap-2">Oh, hello there 👋</h1>
-        <div className="space-y-2 text-lg">
+        <h1 className="text-4xl font-bold gap-2 text-gray-900 dark:text-white">Oh, hello there 👋</h1>
+        <div className="space-y-2 text-lg text-gray-800 dark:text-gray-200">
           <p>
             👨‍🎓 I&apos;m Rahul Arora.
           </p>
@@ -30,7 +30,7 @@ export default function Home() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black hover:text-blue-500 transition-colors duration-200"
+              className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400"
             >
               {text}
             </a>
