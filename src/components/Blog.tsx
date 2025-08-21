@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { loadBlogPosts, type BlogPost } from "../utils/blogUtils";
 
 const Blog = () => {
@@ -9,7 +8,7 @@ const Blog = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const blogPosts = await loadBlogPosts();
+        const blogPosts = await loadBlogPosts('rahularora2715');
         setPosts(blogPosts);
       } catch (error) {
         console.error('Error loading blog posts:', error);
@@ -41,13 +40,14 @@ const Blog = () => {
           </div>
         ) : (
           <div className="space-y-8">
-            {posts.map((post) => (
-              <article key={post.slug} className="border-b border-gray-200 pb-8">
-                <Link to={`/blog/${post.slug}`} className="block hover:opacity-80 transition-opacity">
+            {posts.map((post, index) => (
+              <article key={post.url || index} className="border-b border-gray-200 pb-8">
+                <a href={post.url} target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-opacity">
                   <h2 className="text-2xl font-semibold mb-3 text-blue-600 hover:text-blue-800">
                     {post.title}
+                    <span className="text-sm ml-2 text-gray-500">↗</span>
                   </h2>
-                </Link>
+                </a>
                 
                 <div className="flex items-center gap-4 mb-3 text-sm text-gray-600">
                   <span>{new Date(post.date).toLocaleDateString('en-US', {
@@ -55,25 +55,8 @@ const Blog = () => {
                     month: 'long',
                     day: 'numeric'
                   })}</span>
-                  {post.tags.length > 0 && (
-                    <div className="flex gap-2">
-                      {post.tags.map((tag, index) => (
-                        <span key={index} className="bg-gray-100 px-2 py-1 rounded text-xs">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
                 </div>
                 
-                <p className="text-gray-700 mb-4">{post.excerpt}</p>
-                
-                <Link 
-                  to={`/blog/${post.slug}`}
-                  className="text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  Read more →
-                </Link>
               </article>
             ))}
           </div>
