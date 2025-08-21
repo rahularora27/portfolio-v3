@@ -1,17 +1,11 @@
-import { IconBrandGithub, IconBrandLinkedin } from '@tabler/icons-react';
-
 const socialLinks = [
   {
     href: 'https://github.com/rahularora27',
-    icon: <IconBrandGithub />,
+    text: 'Github',
   },
-  // {
-  //   href: 'https://x.com/_rahul27',
-  //   icon: <IconBrandX />
-  // },
   {
     href: 'https://www.linkedin.com/in/rahularora2715/',
-    icon: <IconBrandLinkedin />,
+    text: 'LinkedIn',
   },
 ];
 
@@ -30,15 +24,15 @@ export default function Home() {
           <p>🏡 Currently living in the beautiful city of Bengaluru, India.</p>
         </div>
         <div className="flex gap-4 mt-4">
-          {socialLinks.map(({ href, icon }) => (
+          {socialLinks.map(({ href, text }) => (
             <a
               key={href}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-blue-500 transition-colors"
+              className="text-black hover:text-blue-500 transition-colors duration-200"
             >
-              {icon}
+              {text}
             </a>
           ))}
         </div>

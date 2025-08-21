@@ -1,6 +1,5 @@
 
 import { Link } from "react-router-dom";
-import { IconDownload } from '@tabler/icons-react';
 
 const Navbar = () => {
   return (
@@ -16,7 +15,6 @@ const Navbar = () => {
             download 
             className="flex items-center gap-2 hover:text-blue-600 transition-colors"
           >
-            <IconDownload size={18} />
             Resume
           </a>
         </div>

@@ -1,86 +1,87 @@
-import matter from "gray-matter";
 
 export interface BlogPost {
-  slug: string;
   title: string;
   date: string;
-  excerpt: string;
-  tags: string[];
+  url: string;
 }
 
-// Function to get all blog post files
-// This is a simple implementation that requires manual updating of the file list
-// In a real application, you might use a build-time plugin to generate this list
-const getBlogFileNames = async (): Promise<string[]> => {
-  // This would ideally be generated at build time
-  // For now, we'll try to fetch a few common patterns and handle errors gracefully
-  const possibleFiles = [
-    'first-post.md',
-    'second-post.md',
-    // Add more files here as you create them
-  ];
-  
-  const existingFiles: string[] = [];
-  
-  for (const filename of possibleFiles) {
-    try {
-      const response = await fetch(`/blog/${filename}`, { method: 'HEAD' });
-      if (response.ok) {
-        existingFiles.push(filename);
-      }
-    } catch {
-      // File doesn't exist, skip it
-      continue;
-    }
-  }
-  
-  return existingFiles;
+
+const parseXML = (xmlString: string) => {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+  return xmlDoc;
 };
 
-export const loadBlogPosts = async (): Promise<BlogPost[]> => {
-  try {
-    const fileNames = await getBlogFileNames();
-    const blogPosts: BlogPost[] = [];
+const extractTextContent = (element: Element | null): string => {
+  if (!element) return '';
+  return element.textContent || '';
+};
 
-    for (const filename of fileNames) {
+const fetchMediumPosts = async (username: string): Promise<BlogPost[]> => {
+  try {
+    console.log('Fetching Medium posts for:', username);
+    
+    // Try multiple proxy services
+    const proxyUrls = [
+      `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://medium.com/feed/@${username}`)}`,
+      `https://corsproxy.io/?${encodeURIComponent(`https://medium.com/feed/@${username}`)}`,
+      `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(`https://medium.com/feed/@${username}`)}`
+    ];
+    
+    for (const proxyUrl of proxyUrls) {
       try {
-        const response = await fetch(`/blog/${filename}`);
-        if (!response.ok) continue;
+        console.log('Trying proxy:', proxyUrl);
+        const response = await fetch(proxyUrl);
         
-        const content = await response.text();
-        const { data } = matter(content);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
         
-        blogPosts.push({
-          slug: filename.replace('.md', ''),
-          title: data.title || 'Untitled',
-          date: data.date || '',
-          excerpt: data.excerpt || '',
-          tags: data.tags || []
-        });
-      } catch (error) {
-        console.error(`Error loading ${filename}:`, error);
+        const xmlText = await response.text();
+        const xmlDoc = parseXML(xmlText);
+        
+        // Check for parsing errors
+        const parseError = xmlDoc.querySelector('parsererror');
+        if (parseError) {
+          throw new Error('XML parsing failed');
+        }
+        
+        const items = xmlDoc.querySelectorAll('item');
+        console.log('Found items:', items.length);
+        
+        if (items.length > 0) {
+          const posts: BlogPost[] = [];
+          
+          items.forEach((item, index) => {
+            const title = extractTextContent(item.querySelector('title'));
+            const link = extractTextContent(item.querySelector('link'));
+            const pubDate = extractTextContent(item.querySelector('pubDate'));
+            posts.push({
+              title: title || 'Untitled',
+              date: pubDate || '',
+              url: link
+            });
+          });
+          
+          console.log('Successfully parsed posts:', posts.length);
+          return posts;
+        }
+      } catch (proxyError) {
+        console.warn('Proxy failed:', proxyUrl, proxyError);
+        continue;
       }
     }
-
-    // Sort by date, newest first
-    return blogPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    
+    throw new Error('All proxies failed');
   } catch (error) {
-    console.error('Error loading blog posts:', error);
+    console.error('Error fetching Medium posts:', error);
     return [];
   }
 };
 
-export const loadBlogPost = async (slug: string): Promise<{ data: Record<string, unknown>; content: string } | null> => {
-  try {
-    const response = await fetch(`/blog/${slug}.md`);
-    if (!response.ok) {
-      return null;
-    }
-    
-    const markdown = await response.text();
-    return matter(markdown);
-  } catch (error) {
-    console.error('Error loading blog post:', error);
-    return null;
-  }
+export const loadBlogPosts = async (mediumUsername: string): Promise<BlogPost[]> => {
+  const mediumPosts = await fetchMediumPosts(mediumUsername);
+  // Sort by date, newest first
+  return mediumPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
+
