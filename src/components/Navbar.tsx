@@ -10,6 +10,7 @@ const Navbar = () => {
           <Link to="/" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 ">rahularora.tech</Link>
         </div>
         <div className="flex gap-4 items-center">
+          <Link to="/projects" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 ">Projects</Link>
           <Link to="/blog" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 ">Blog</Link>
           <a 
             href="/resume.pdf" 

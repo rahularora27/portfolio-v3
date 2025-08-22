@@ -1,11 +1,13 @@
+import { Github, Linkedin } from "lucide-react";
+
 const socialLinks = [
   {
     href: 'https://github.com/rahularora27',
-    text: 'Github',
+    icon: <Github />,
   },
   {
     href: 'https://www.linkedin.com/in/rahularora2715/',
-    text: 'LinkedIn',
+    icon: <Linkedin />,
   },
 ];
 
@@ -24,7 +26,7 @@ export default function Home() {
           <p>🏡 Currently living in the beautiful city of Bengaluru, India.</p>
         </div>
         <div className="flex gap-4 mt-4">
-          {socialLinks.map(({ href, text }) => (
+          {socialLinks.map(({ href, icon }) => (
             <a
               key={href}
               href={href}
@@ -32,7 +34,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400"
             >
-              {text}
+              {icon}
             </a>
           ))}
         </div>
