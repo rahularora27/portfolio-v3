@@ -11,7 +11,6 @@ const Navbar = () => {
         </div>
         <div className="flex gap-4 items-center">
           <Link to="/projects" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 ">Projects</Link>
-          <Link to="/blogs" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 ">Blogs</Link>
           <a 
             href="/resume.pdf" 
             download 
