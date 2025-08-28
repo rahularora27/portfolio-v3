@@ -7,7 +7,7 @@ import { ThemeProvider } from './components/ThemeProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='/portfolio-v3'>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <App />
       </ThemeProvider>
