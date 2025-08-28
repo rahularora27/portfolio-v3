@@ -52,7 +52,7 @@ const fetchMediumPosts = async (username: string): Promise<BlogPost[]> => {
         if (items.length > 0) {
           const posts: BlogPost[] = [];
           
-          items.forEach((item, index) => {
+          items.forEach((item) => {
             const title = extractTextContent(item.querySelector('title'));
             const link = extractTextContent(item.querySelector('link'));
             const pubDate = extractTextContent(item.querySelector('pubDate'));
