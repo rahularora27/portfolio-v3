@@ -12,7 +12,7 @@ export const projectsData: Project[] = [
   {
     id: "portfolio-v3",
     title: "Portfolio Website",
-    description: "A modern portfolio website built with React, TypeScript, and Tailwind CSS. Features dark mode, blog integration, and responsive design.",
+    description: "A modern portfolio website built with React, TypeScript, and Tailwind CSS. Features dark mode and responsive design.",
     github: "https://github.com/rahularora27/portfolio-v3",
     deployment: "https://rahularora.tech",
     technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
@@ -26,7 +26,6 @@ This is my third iteration of my personal portfolio website, built from the grou
 - **Modern Tech Stack**: Built with React 18, TypeScript, and Vite for blazing fast development and build times
 - **Responsive Design**: Fully responsive layout that works seamlessly across all devices
 - **Dark Mode**: Complete dark/light theme toggle with system preference detection
-- **Blog Integration**: Integrated blog functionality with Markdown support
 - **Performance Optimized**: Optimized for Core Web Vitals and SEO
 
 ## 🎯 Goals

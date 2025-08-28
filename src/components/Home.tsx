@@ -9,6 +9,10 @@ const socialLinks = [
     href: 'https://www.linkedin.com/in/rahularora2715/',
     icon: <Linkedin />,
   },
+  {
+    href: 'http://www.medium.com/@rahularora2715',
+    icon: <Linkedin />
+  }
 ];
 
 export default function Home() {
