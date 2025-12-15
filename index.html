@@ -4,6 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rahul Arora</title>
+    <style>
+      html {
+        background: #ffffff;
+        color: #0b0f19;
+        color-scheme: light;
+      }
+      html.dark {
+        background: #0b0f19;
+        color: #f8fafc;
+        color-scheme: dark;
+      }
+      html.theme-init *,
+      html.theme-init *::before,
+      html.theme-init *::after {
+        transition: none !important;
+      }
+    </style>
+    <script>
+      (function () {
+        var root = document.documentElement
+        root.classList.add('theme-init')
+        try {
+          var storageKey = 'vite-ui-theme'
+          var theme = localStorage.getItem(storageKey) || 'dark'
+          root.classList.remove('light', 'dark')
+          if (theme === 'system') {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+          }
+          root.classList.add(theme)
+        } catch (e) {
+          root.classList.add('dark')
+        }
+        requestAnimationFrame(function () {
+          root.classList.remove('theme-init')
+        })
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
