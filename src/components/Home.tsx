@@ -7,10 +7,6 @@ const socialLinks = [
     href: 'https://www.linkedin.com/in/rahularora2715/',
     name: 'Linkedin'
   },
-  {
-    href: 'http://www.medium.com/@rahularora2715',
-    name: 'Medium'
-  }
 ];
 
 export default function Home() {
@@ -20,11 +16,16 @@ export default function Home() {
         <h1 className="text-4xl font-bold gap-2 text-gray-900 dark:text-white">Oh, hello there 👋</h1>
         <div className="space-y-2 text-lg text-gray-800 dark:text-gray-200">
           <p>
-            👨‍🎓 I&apos;m Rahul Arora.
+            👨‍🎓 I&apos;m Rahul Arora, a recent graduate from Manipal University.
           </p>
           {/* <p>👨‍💻 A part-time cricketer and a lover of math and CS.</p> */}
-          <p>🎓 Recently graduated from Manipal University Jaipur.</p>
-          <p>⚒️ I&apos;m currently working at Rakuten India.</p>
+          <p>👨‍💻 Currently working at <a
+              href="https://global.rakuten.com/corp/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-600 dark:hover:text-blue-400 underline"
+            >Rakuten</a>.</p>
+          <p>⚒️ I mainly work with Java and React on a daily basis.</p>
           <p>🏡 Currently living in the beautiful city of Bengaluru, India.</p>
         </div>
         <div className="flex gap-4 mt-4">

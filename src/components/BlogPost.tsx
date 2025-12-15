@@ -35,7 +35,7 @@ export default function BlogPost() {
           to="/blogs"
           className="text-blue-600 dark:text-blue-400 hover:underline mb-4 inline-block"
         >
-          ƒ+? Back to Blogs
+          ← Back to Blogs
         </Link>
 
         <div className="space-y-4">

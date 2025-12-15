@@ -9,10 +9,10 @@ const Navbar = () => {
     <nav className="flex justify-center items-center p-4">
       <div className="w-full lg:w-3/4 flex justify-between items-center">
         <div className="text-2xl font-bold text-gray-900 dark:text-white">
-          <Link to="/" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 ">rahularora.tech</Link>
+          <Link to="/" className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 ">rahularora</Link>
         </div>
         <div className="flex gap-4 items-center">
-          <Link to="/projects" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 ">Projects</Link>
+          {/* <Link to="/projects" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 ">Projects</Link> */}
           <Link to="/blogs" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 ">Blogs</Link>
           <a 
             href={`${baseUrl}resume.pdf`}
