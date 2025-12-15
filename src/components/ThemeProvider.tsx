@@ -2,6 +2,23 @@ import { createContext, useContext, useEffect, useState } from "react"
 
 type Theme = "dark" | "light" | "system"
 
+function safeGetItem(key: string) {
+  try {
+    if (typeof window === "undefined") return null
+    return window.localStorage.getItem(key)
+  } catch {
+    return null
+  }
+}
+
+function safeSetItem(key: string, value: string) {
+  try {
+    if (typeof window === "undefined") return
+    window.localStorage.setItem(key, value)
+  } catch {
+  }
+}
+
 type ThemeProviderProps = {
   children: React.ReactNode
   defaultTheme?: Theme
@@ -27,7 +44,7 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+    () => (safeGetItem(storageKey) as Theme) || defaultTheme
   )
 
   useEffect(() => {
@@ -51,7 +68,7 @@ export function ThemeProvider({
   const value = {
     theme,
     setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme)
+      safeSetItem(storageKey, theme)
       setTheme(theme)
     },
   }
