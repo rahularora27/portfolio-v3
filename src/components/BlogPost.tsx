@@ -2,6 +2,14 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Link, useParams } from "react-router-dom";
 import { formatBlogDate, getBlogBySlug } from "../lib/blog";
+import GistEmbed from "./GistEmbed";
+
+function normalizeEmbeds(markdown: string) {
+  return markdown.replace(
+    /<script\s+src=["'](https:\/\/gist\.github\.com\/[^"']+?\.js(?:\?[^"']*)?)["']\s*>\s*<\/script>/gi,
+    (_match, src: string) => `\n\n\`\`\`gist\n${src}\n\`\`\`\n\n`,
+  );
+}
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
@@ -27,6 +35,8 @@ export default function BlogPost() {
       </div>
     );
   }
+
+  const markdown = normalizeEmbeds(blog.content);
 
   return (
     <div className="flex flex-col justify-center items-center flex-grow p-6">
@@ -117,9 +127,25 @@ export default function BlogPost() {
                     {children}
                   </ol>
                 ),
+                code: ({ className, children, ...props }) => {
+                  const isGist =
+                    typeof className === "string" &&
+                    className.includes("language-gist");
+
+                  if (isGist) {
+                    const src = String(children).trim();
+                    return <GistEmbed src={src} />;
+                  }
+
+                  return (
+                    <code {...props} className={className}>
+                      {children}
+                    </code>
+                  );
+                },
               }}
             >
-              {blog.content}
+              {markdown}
             </ReactMarkdown>
           </div>
         </div>
@@ -127,4 +153,3 @@ export default function BlogPost() {
     </div>
   );
 }
-
