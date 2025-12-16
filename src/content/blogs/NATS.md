@@ -72,3 +72,84 @@ To try it out, refer to the [Request-Reply Walkthrough](https://docs.nats.io/nat
 ![Queue Group Model](/blog/Queue_Group_Model.webp)
 
 To try it out, refer to the [Queueing Walkthrough](https://docs.nats.io/nats-concepts/core-nats/queue/queues_walkthrough).
+
+# Message Delivery
+
+## At-Most-Once
+
+In the core NATS system, messages are delivered at most once. This means:
+
+* If a subscriber is connected and listening, it will receive the message.
+
+* If a subscriber is not connected or is temporarily unavailable, the message is lost. There is no persistence or retry mechanism in core NATS.
+
+* This is the fastest and simplest delivery guarantee, but it’s not suitable for applications that require guaranteed delivery.
+
+## At-Least-Once
+
+JetStream adds persistence and other features that enable at-least-once delivery. This means:
+
+* Messages are stored in a stream (similar to a Kafka topic).
+
+* Subscribers can consume messages from the stream.
+
+* If a subscriber fails to acknowledge a message, JetStream will redeliver it.
+
+* This guarantees that a message will be delivered at least once, but it doesn’t guarantee that it will be processed exactly once.
+
+## Exactly-Once
+
+As JetStream provides at-least-once delivery, we need to implement additional mechanisms to ensure that messages are processed exactly once. Here’s how we can achieve that:
+
+* Idempotent Consumers:
+    * The key is to make your consumer logic idempotent. This means that if a consumer receives the same message multiple times, processing it multiple times has the same effect as processing it only once.
+    * This is typically achieved by tracking which messages have already been processed.
+
+* Message IDs and Deduplication:
+    * Assign Unique IDs: Ensure that each message has a unique ID (e.g., a UUID). The producer should generate this ID and include it in the message payload.
+    * Deduplication Logic: The consumer must maintain a record of the message IDs it has already processed. This can be done using a database, a cache, or any other persistent storage.
+    * Check for Duplicates: When a consumer receives a message, it first checks if the message ID is already in its processed list.
+
+# Ordering Guarantee
+
+NATS implements source ordered delivery per publisher. This means, messages from a given single publisher will be delivered to all eligible subscribers in the order in which they were originally published. There are no guarantees of message delivery order amongst multiple publishers.
+
+# JetStream
+
+* Durable streaming layer built on top of core NATS.
+
+* Offers advanced features like stream management, consumer configurations, and data retention policies.
+
+* Supports message persistence and guaranteed delivery (at-least once).
+
+* Provides fault tolerance through replication.
+
+* JetStream also provides “exactly-once” delivery-
+    * Publishing: When sending a message, the application adds a unique ID. JetStream remembers these IDs for a while. If the same ID is sent again, JetStream knows it’s a duplicate and ignores it.
+    * Subscribing: JetStream uses a special “double check” system when sending messages to subscribers. This prevents messages from being accidentally resent if something goes wrong.
+
+To learn about JetStream policies and limits, see [JetStream](https://docs.nats.io/nats-concepts/jetstream).
+
+# NATS Tools
+
+## NATS Client Libraries
+
+The most common form of connecting to the NATS messaging system will be through an application built with any of the [40+ client libraries](https://docs.nats.io/using-nats/developer) available for NATS.
+
+The client application will connect to an instance of the NATS server, be it a single server, a cluster of servers or even a global super-cluster such as [Synadia Cloud](https://www.synadia.com/cloud), sending and receiving messages via a range of subscribers.
+
+For NATS with Java, refer [nats.java](https://github.com/nats-io/nats.java).
+
+## NATS CLI
+
+The NATS Command Line Tool is the easiest way to interact with, test and manage NATS and JetStream from a terminal or from scripts.
+
+Download [here](https://github.com/nats-io/natscli/releases).
+
+To try it out, watch this [video](https://www.youtube.com/watch?v=OFUjbv1ItJc).
+
+# Logging
+
+When nats-server runs as a standalone process or within a container, its logs are typically written to stdout (standard output), visible directly in the terminal.
+
+<script src="https://gist.github.com/rahularora27/b7a27fa86b7e07f26f9881626fe9df86.js"></script>
