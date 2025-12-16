@@ -3,12 +3,98 @@ import remarkGfm from "remark-gfm";
 import { Link, useParams } from "react-router-dom";
 import { formatBlogDate, getBlogBySlug } from "../lib/blog";
 import GistEmbed from "./GistEmbed";
+import { useEffect, useMemo, useRef } from "react";
 
 function normalizeEmbeds(markdown: string) {
   return markdown.replace(
     /<script\s+src=["'](https:\/\/gist\.github\.com\/[^"']+?\.js(?:\?[^"']*)?)["']\s*>\s*<\/script>/gi,
     (_match, src: string) => `\n\n\`\`\`gist\n${src}\n\`\`\`\n\n`,
   );
+}
+
+function plainText(value: string) {
+  return value
+    .replace(/<[^>]*>/g, "")
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/[*_~]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function createSlugger() {
+  const seen = new Map<string, number>();
+  const slug = (text: string) => {
+    const base = plainText(text)
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+
+    const key = base || "section";
+    const count = seen.get(key) ?? 0;
+    seen.set(key, count + 1);
+    return count === 0 ? key : `${key}-${count}`;
+  };
+  return { slug };
+}
+
+function extractToc(markdown: string, titleToSkip?: string) {
+  const toc: Array<{ depth: number; text: string; id: string }> = [];
+  const slugger = createSlugger();
+
+  const lines = markdown.split(/\r?\n/);
+  let inFence = false;
+  let fenceMarker: string | null = null;
+
+  for (const line of lines) {
+    const fenceMatch = line.match(/^(\s*)(```|~~~)/);
+    if (fenceMatch) {
+      const marker = fenceMatch[2];
+      if (!inFence) {
+        inFence = true;
+        fenceMarker = marker;
+      } else if (fenceMarker === marker) {
+        inFence = false;
+        fenceMarker = null;
+      }
+      continue;
+    }
+
+    if (inFence) continue;
+
+    const match = line.match(/^(#{1,6})\s+(.+?)\s*#*\s*$/);
+    if (!match) continue;
+
+    const depth = match[1].length;
+    const rawText = match[2];
+    const text = plainText(rawText);
+    if (!text) continue;
+
+    if (titleToSkip && text.toLowerCase() === plainText(titleToSkip).toLowerCase()) {
+      continue;
+    }
+
+    if (depth > 3) continue;
+
+    toc.push({ depth, text, id: slugger.slug(text) });
+  }
+
+  return toc;
+}
+
+function childrenToText(children: unknown): string {
+  if (children == null) return "";
+  if (typeof children === "string" || typeof children === "number") return String(children);
+  if (Array.isArray(children)) return children.map(childrenToText).join("");
+  if (typeof children === "object" && "props" in (children as any)) {
+    return childrenToText((children as any).props?.children);
+  }
+  return "";
 }
 
 export default function BlogPost() {
@@ -36,7 +122,13 @@ export default function BlogPost() {
     );
   }
 
-  const markdown = normalizeEmbeds(blog.content);
+  const markdown = useMemo(() => normalizeEmbeds(blog.content), [blog.content]);
+  const toc = useMemo(() => extractToc(markdown, blog.title), [blog.title, markdown]);
+  const headingSluggerRef = useRef(createSlugger());
+
+  useEffect(() => {
+    headingSluggerRef.current = createSlugger();
+  }, [markdown]);
 
   return (
     <div className="flex flex-col justify-center items-center flex-grow p-6">
@@ -72,6 +164,36 @@ export default function BlogPost() {
             />
           )}
 
+          {toc.length > 0 && (
+            <nav
+              aria-label="Table of contents"
+              className="rounded-lg border border-border bg-muted/30 p-4"
+            >
+              <div className="text-sm font-semibold text-foreground">On this page</div>
+              <ul className="mt-3 space-y-1 text-sm">
+                {toc.map((item) => (
+                  <li
+                    key={item.id}
+                    className={
+                      item.depth === 1
+                        ? ""
+                        : item.depth === 2
+                          ? "ml-3"
+                          : "ml-6"
+                    }
+                  >
+                    <a
+                      href={`#${item.id}`}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      {item.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
+
           <div className="prose prose-zinc prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-a:font-medium prose-a:underline prose-a:underline-offset-4 prose-pre:rounded-lg prose-pre:border prose-pre:border-border prose-pre:bg-muted prose-pre:p-4 prose-code:before:content-none prose-code:after:content-none prose-img:rounded-lg prose-img:border prose-img:border-border">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
@@ -90,6 +212,33 @@ export default function BlogPost() {
                   );
                 },
                 img: ({ ...props }) => <img {...props} loading="lazy" />,
+                h1: ({ children, ...props }) => {
+                  const text = plainText(childrenToText(children));
+                  const id = headingSluggerRef.current.slug(text);
+                  return (
+                    <h1 {...props} id={id}>
+                      {children}
+                    </h1>
+                  );
+                },
+                h2: ({ children, ...props }) => {
+                  const text = plainText(childrenToText(children));
+                  const id = headingSluggerRef.current.slug(text);
+                  return (
+                    <h2 {...props} id={id}>
+                      {children}
+                    </h2>
+                  );
+                },
+                h3: ({ children, ...props }) => {
+                  const text = plainText(childrenToText(children));
+                  const id = headingSluggerRef.current.slug(text);
+                  return (
+                    <h3 {...props} id={id}>
+                      {children}
+                    </h3>
+                  );
+                },
                 code: ({ className, children, ...props }) => {
                   const isGist =
                     typeof className === "string" &&
