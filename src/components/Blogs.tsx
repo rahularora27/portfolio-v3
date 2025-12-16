@@ -7,10 +7,6 @@ export default function Blogs() {
   return (
     <div className="flex flex-col justify-center items-center flex-grow p-6">
       <div className="w-full max-w-4xl space-y-6">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white text-center mb-8">
-          Blogs
-        </h1>
-
         {blogs.length === 0 ? (
           <p className="text-gray-700 dark:text-gray-300 text-center">
             No blogs yet.

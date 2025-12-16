@@ -1,9 +1,9 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { formatBlogDate, getBlogBySlug } from "../lib/blog";
 import GistEmbed from "./GistEmbed";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 
 function normalizeEmbeds(markdown: string) {
   return markdown.replace(
@@ -99,6 +99,7 @@ function childrenToText(children: unknown): string {
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const blog = slug ? getBlogBySlug(slug) : undefined;
 
   if (!blog) {
@@ -124,11 +125,51 @@ export default function BlogPost() {
 
   const markdown = useMemo(() => normalizeEmbeds(blog.content), [blog.content]);
   const toc = useMemo(() => extractToc(markdown, blog.title), [blog.title, markdown]);
-  const headingSluggerRef = useRef(createSlugger());
+
+  const tocIdsByKey = useMemo(() => {
+    const map = new Map<string, string[]>();
+    for (const item of toc) {
+      const key = `${item.depth}|${item.text}`;
+      const existing = map.get(key);
+      if (existing) existing.push(item.id);
+      else map.set(key, [item.id]);
+    }
+    return map;
+  }, [toc]);
+
+  const fallbackSlugger = createSlugger();
+  const tocCursor = new Map<string, number>();
+  const tocIdFor = (depth: number, text: string) => {
+    const key = `${depth}|${text}`;
+    const ids = tocIdsByKey.get(key);
+    if (!ids || ids.length === 0) return undefined;
+    const index = tocCursor.get(key) ?? 0;
+    tocCursor.set(key, index + 1);
+    return ids[index] ?? ids[ids.length - 1];
+  };
 
   useEffect(() => {
-    headingSluggerRef.current = createSlugger();
-  }, [markdown]);
+    if (!location.hash) return;
+    const id = decodeURIComponent(location.hash.slice(1));
+    if (!id) return;
+
+    const attempt = () => {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      return true;
+    };
+
+    if (attempt()) return;
+    const t1 = window.setTimeout(attempt, 0);
+    const t2 = window.setTimeout(attempt, 50);
+    const t3 = window.setTimeout(attempt, 250);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.clearTimeout(t3);
+    };
+  }, [location.hash, markdown]);
 
   return (
     <div className="flex flex-col justify-center items-center flex-grow p-6">
@@ -214,7 +255,7 @@ export default function BlogPost() {
                 img: ({ ...props }) => <img {...props} loading="lazy" />,
                 h1: ({ children, ...props }) => {
                   const text = plainText(childrenToText(children));
-                  const id = headingSluggerRef.current.slug(text);
+                  const id = tocIdFor(1, text) ?? fallbackSlugger.slug(text);
                   return (
                     <h1 {...props} id={id}>
                       {children}
@@ -223,7 +264,7 @@ export default function BlogPost() {
                 },
                 h2: ({ children, ...props }) => {
                   const text = plainText(childrenToText(children));
-                  const id = headingSluggerRef.current.slug(text);
+                  const id = tocIdFor(2, text) ?? fallbackSlugger.slug(text);
                   return (
                     <h2 {...props} id={id}>
                       {children}
@@ -232,7 +273,7 @@ export default function BlogPost() {
                 },
                 h3: ({ children, ...props }) => {
                   const text = plainText(childrenToText(children));
-                  const id = headingSluggerRef.current.slug(text);
+                  const id = tocIdFor(3, text) ?? fallbackSlugger.slug(text);
                   return (
                     <h3 {...props} id={id}>
                       {children}
