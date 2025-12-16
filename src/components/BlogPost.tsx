@@ -156,7 +156,13 @@ export default function BlogPost() {
     const attempt = () => {
       const el = document.getElementById(id);
       if (!el) return false;
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      const prefersReducedMotion =
+        typeof window !== "undefined" &&
+        window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      el.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
       return true;
     };
 
