@@ -65,7 +65,7 @@ export default function GistEmbed({ src, title = "GitHub Gist" }: GistEmbedProps
     <iframe
       ref={iframeRef}
       title={title}
-      className="w-full"
+      className="my-6 w-full rounded-lg border border-border bg-background"
       scrolling="no"
       srcDoc={srcDoc}
       sandbox="allow-scripts"

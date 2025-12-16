@@ -40,7 +40,7 @@ export default function BlogPost() {
 
   return (
     <div className="flex flex-col justify-center items-center flex-grow p-6">
-      <div className="w-full max-w-4xl space-y-6">
+      <article className="w-full max-w-4xl space-y-6">
         <Link
           to="/blogs"
           className="text-blue-600 dark:text-blue-400 hover:underline mb-4 inline-block"
@@ -48,7 +48,7 @@ export default function BlogPost() {
           ← Back to Blogs
         </Link>
 
-        <div className="space-y-4">
+        <div className="space-y-4 rounded-xl border border-border bg-card text-card-foreground p-6 md:p-10">
           <div className="space-y-2">
             <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2">
               <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
@@ -67,66 +67,29 @@ export default function BlogPost() {
             <img
               src={blog.image}
               alt={blog.title}
-              className="w-full max-h-96 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
+              className="w-full max-h-96 object-cover rounded-lg border border-border"
               loading="lazy"
             />
           )}
 
-          <div className="prose prose-lg dark:prose-invert max-w-none">
+          <div className="prose prose-zinc prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-a:font-medium prose-a:underline prose-a:underline-offset-4 prose-pre:rounded-lg prose-pre:border prose-pre:border-border prose-pre:bg-muted prose-pre:p-4 prose-code:before:content-none prose-code:after:content-none prose-img:rounded-lg prose-img:border prose-img:border-border">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
-                a: ({ children, ...props }) => (
-                  <a
-                    {...props}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    {children}
-                  </a>
-                ),
-                img: ({ ...props }) => (
-                  <img
-                    {...props}
-                    className="rounded-lg border border-gray-200 dark:border-gray-700"
-                    loading="lazy"
-                  />
-                ),
-                h1: ({ children, ...props }) => (
-                  <h1
-                    {...props}
-                    className="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4"
-                  >
-                    {children}
-                  </h1>
-                ),
-                h2: ({ children, ...props }) => (
-                  <h2
-                    {...props}
-                    className="text-2xl font-semibold text-gray-900 dark:text-white mt-6 mb-3"
-                  >
-                    {children}
-                  </h2>
-                ),
-                h3: ({ children, ...props }) => (
-                  <h3
-                    {...props}
-                    className="text-xl font-medium text-gray-900 dark:text-white mt-4 mb-2"
-                  >
-                    {children}
-                  </h3>
-                ),
-                ul: ({ children, ...props }) => (
-                  <ul {...props} className="list-disc pl-6">
-                    {children}
-                  </ul>
-                ),
-                ol: ({ children, ...props }) => (
-                  <ol {...props} className="list-decimal pl-6">
-                    {children}
-                  </ol>
-                ),
+                a: ({ children, ...props }) => {
+                  const href = typeof props.href === "string" ? props.href : "";
+                  const isExternal = /^https?:\/\//i.test(href);
+                  return (
+                    <a
+                      {...props}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                    >
+                      {children}
+                    </a>
+                  );
+                },
+                img: ({ ...props }) => <img {...props} loading="lazy" />,
                 code: ({ className, children, ...props }) => {
                   const isGist =
                     typeof className === "string" &&
@@ -149,7 +112,7 @@ export default function BlogPost() {
             </ReactMarkdown>
           </div>
         </div>
-      </div>
+      </article>
     </div>
   );
 }
