@@ -303,8 +303,8 @@ export default function BlogPost() {
             "prose-headings:scroll-mt-24",
             "prose-a:font-medium prose-a:underline prose-a:underline-offset-4",
             "prose-img:rounded-xl",
-            "prose-pre:bg-transparent prose-pre:border prose-pre:border-border prose-pre:rounded-xl prose-pre:p-4",
-            "prose-code:before:content-none prose-code:after:content-none",
+            "prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-pre:rounded-xl prose-pre:p-4",
+            "prose-code:before:content-none prose-code:after:content-none prose-code:text-zinc-800 dark:prose-code:text-zinc-200",
           ].join(" ")}
         >
           <ReactMarkdown
@@ -323,7 +323,13 @@ export default function BlogPost() {
                   </a>
                 );
               },
-              img: ({ ...props }) => <img {...props} loading="lazy" />,
+              img: ({ src, ...props }) => {
+                const baseSrc =
+                  src && src.startsWith("/")
+                    ? `${import.meta.env.BASE_URL}${src.slice(1)}`
+                    : src;
+                return <img {...props} src={baseSrc} loading="lazy" />;
+              },
               h1: ({ children, ...props }) => {
                 const text = plainText(childrenToText(children));
                 const id = tocIdFor(1, text) ?? fallbackSlugger.slug(text);
