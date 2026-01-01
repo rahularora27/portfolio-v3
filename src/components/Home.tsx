@@ -20,11 +20,11 @@ export default function Home() {
           </p>
           {/* <p>👨‍💻 A part-time cricketer and a lover of math and CS.</p> */}
           <p>👨‍💻 Currently working at <a
-              href="https://global.rakuten.com/corp/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-blue-600 dark:hover:text-blue-400 underline"
-            >Rakuten</a>.</p>
+            href="https://global.rakuten.com/corp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-link-hover underline"
+          >Rakuten</a>.</p>
           <p>⚒️ I mainly work with Java and React on a daily basis.</p>
           <p>🏡 Currently living in the beautiful city of Bengaluru, India.</p>
         </div>
@@ -35,7 +35,7 @@ export default function Home() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400"
+              className="text-gray-900 dark:text-gray-100 hover:text-link-hover dark:hover:text-link-hover"
             >
               {name}
             </a>

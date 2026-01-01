@@ -42,7 +42,7 @@ export default function Blogs() {
                     {blog.description}
                   </p>
 
-                  <span className="inline-block text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
+                  <span className="inline-block text-gray-900 dark:text-gray-100 hover:text-link-hover dark:hover:text-link-hover font-medium">
                     Read More
                   </span>
                 </div>

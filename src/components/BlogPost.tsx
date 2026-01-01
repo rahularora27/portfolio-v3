@@ -133,7 +133,7 @@ function TocList({ nodes, level = 0 }: { nodes: TocNode[]; level?: number }) {
     >
       {nodes.map((n) => (
         <li key={n.id}>
-          <a href={`#${n.id}`} className="text-muted-foreground hover:text-foreground">
+          <a href={`#${n.id}`} className="text-muted-foreground hover:text-link-hover">
             {n.text}
           </a>
 
@@ -161,7 +161,7 @@ export default function BlogPost() {
           <p className="text-muted-foreground">
             The blog you&apos;re looking for doesn&apos;t exist.
           </p>
-          <Link to="/blogs" className="text-blue-600 dark:text-blue-400 hover:underline">
+          <Link to="/blogs" className="text-link-hover hover:underline">
             Back to blogs
           </Link>
         </div>
@@ -240,7 +240,7 @@ export default function BlogPost() {
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-10">
       <div className="mb-8">
-        <Link to="/blogs" className="text-sm text-muted-foreground hover:text-foreground">
+        <Link to="/blogs" className="text-sm text-muted-foreground hover:text-link-hover">
           ← Back to blogs
         </Link>
       </div>

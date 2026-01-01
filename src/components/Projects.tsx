@@ -6,7 +6,7 @@ export default function Projects() {
     <div className="flex flex-col justify-center items-center flex-grow p-6">
       <div className="w-full max-w-4xl space-y-6">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white text-center mb-8">Projects</h1>
-        
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
           {projectsData.map((project) => (
             <div
@@ -16,11 +16,11 @@ export default function Projects() {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
                 {project.title}
               </h3>
-              
+
               <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
                 {project.description}
               </p>
-              
+
               <div className="flex flex-wrap gap-2 mb-4">
                 {project.technologies.map((tech) => (
                   <span
@@ -31,12 +31,12 @@ export default function Projects() {
                   </span>
                 ))}
               </div>
-              
+
               <div className="flex gap-4 flex-wrap">
                 {project.detailedContent && (
                   <Link
                     to={`/projects/${project.id}`}
-                    className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
+                    className="text-gray-900 dark:text-gray-100 hover:text-link-hover font-medium"
                   >
                     Read More
                   </Link>
@@ -45,7 +45,7 @@ export default function Projects() {
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
+                  className="text-gray-900 dark:text-gray-100 hover:text-link-hover font-medium"
                 >
                   GitHub
                 </a>
@@ -54,7 +54,7 @@ export default function Projects() {
                     href={project.deployment}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
+                    className="text-gray-900 dark:text-gray-100 hover:text-link-hover font-medium"
                   >
                     Live Demo
                   </a>
