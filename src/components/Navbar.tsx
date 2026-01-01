@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { ModeToggle } from "./ModeToggle";
 
 const Navbar = () => {
-  const baseUrl = import.meta.env.BASE_URL ?? "/";
-
   return (
     <nav className="flex justify-center items-center p-4">
       <div className="w-full lg:w-3/4 flex justify-between items-center">
@@ -14,8 +12,9 @@ const Navbar = () => {
         <div className="flex gap-4 items-center">
           <Link to="/blogs" className="text-gray-700 dark:text-gray-300 hover:text-link-hover dark:hover:text-link-hover">Blogs</Link>
           <a
-            href={`${baseUrl}resume.pdf`}
-            download
+            href="https://drive.google.com/file/d/18e5LchDKpxryDHrHOARnuicQTV3wij5D/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-link-hover dark:hover:text-link-hover"
           >
             Resume
