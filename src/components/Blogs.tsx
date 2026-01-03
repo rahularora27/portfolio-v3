@@ -17,32 +17,34 @@ export default function Blogs() {
               <Link
                 key={blog.slug}
                 to={`/blogs/${blog.slug}`}
-                className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-white dark:bg-gray-800"
+                className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-white dark:bg-gray-800 flex h-full flex-col"
               >
-                {blog.image && (
-                  <img
-                    src={blog.image}
-                    alt={blog.title}
-                    className="w-full h-44 object-cover"
-                    loading="lazy"
-                  />
-                )}
+                <div className="w-full h-44 bg-gray-100 dark:bg-gray-700">
+                  {blog.image && (
+                    <img
+                      src={blog.image}
+                      alt={blog.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  )}
+                </div>
 
-                <div className="p-6 space-y-3">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <div className="p-6 flex flex-1 flex-col gap-3">
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto] grid-rows-[1.75rem_1.75rem] gap-x-3">
+                    <h3 className="row-span-2 text-xl font-semibold text-gray-900 dark:text-white leading-7 overflow-hidden text-ellipsis [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]">
                       {blog.title}
                     </h3>
-                    <span className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                    <span className="col-start-2 row-start-1 self-end text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
                       {formatBlogDate(blog.date)}
                     </span>
                   </div>
 
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed min-h-[3.25rem] overflow-hidden text-ellipsis [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]">
                     {blog.description}
                   </p>
 
-                  <span className="inline-block text-gray-900 dark:text-gray-100 hover:text-link-hover dark:hover:text-link-hover font-medium">
+                  <span className="inline-block text-gray-900 dark:text-gray-100 hover:text-link-hover dark:hover:text-link-hover font-medium mt-auto">
                     Read More
                   </span>
                 </div>
@@ -54,4 +56,3 @@ export default function Blogs() {
     </div>
   );
 }
-
